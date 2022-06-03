@@ -57,37 +57,38 @@ int main(int argc, char *argv[])
     {
         printf("Wave %d\n", count);
         printf("    \n");
-        sleep(2);
+        sleep(0.5);
         count += 1;
-    for (counter = 0; counter < 20; counter++)
-    {
-        /* Create TCP socket. */
-        if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+        for (counter = 0; counter < 25; counter++)
         {
-            perror("socket");
-            exit(1);
-        }
+            /* Create TCP socket. */
+            if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+            {
+                perror("socket");
+                exit(1);
+            }
 
-        /* Connect to socket with server address. */
-        if (connect(socket_fd, (struct sockaddr *)&server_address, sizeof server_address) == -1)
-        {
-            perror("connect");
-            exit(1);
-        }
+            /* Connect to socket with server address. */
+            if (connect(socket_fd, (struct sockaddr *)&server_address, sizeof server_address) == -1)
+            {
+                perror("connect");
+                exit(1);
+            }
 
-        /* TODO: Put server interaction code here. For example, use
+            /* TODO: Put server interaction code here. For example, use
      * write(socket_fd,,) and read(socket_fd,,) to send and receive messages
      * with the client.
      */
 
-        char msg[8] = "I am pi3";
-        char *p;
-        int resp;
-        p = &msg;
-        resp = send(socket_fd, p, 8, 0);
-        printf("Sent %d bytes\n", resp);
+            char msg[8] = "I am pi3";
+            char *p;
+            int resp;
+            p = &msg;
+            resp = send(socket_fd, p, 8, 0);
+            printf("Sent %d bytes\n", resp);
+            close(socket_fd);
 
-        /*
+            /*
         Partie du code pour recevoir une réponse ; si on le met, le client attend après chaque requête; mais du coup on bombarde bcp moins vite
         char rcv_buffer[8] = "";
         printf("%s\n", rcv_buffer);
@@ -95,8 +96,8 @@ int main(int argc, char *argv[])
         printf("Received %d bytes, message (counter = %d) : \n", resp, counter);
         printf("%s\n", rcv_buffer);
         printf("  \n");*/
-    }
-    printf("   \n");
+        }
+        printf("   \n");
     }
     return 0;
 }

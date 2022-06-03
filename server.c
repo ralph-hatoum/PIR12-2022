@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
 #define BACKLOG 10
 
@@ -155,6 +156,7 @@ int main(int argc, char *argv[])
 
 void *pthread_routine(void *arg)
 {
+    pthread_detach(pthread_self());
     pthread_arg_t *pthread_arg = (pthread_arg_t *)arg;
     int new_socket_fd = pthread_arg->new_socket_fd;
     struct sockaddr_in client_address = pthread_arg->client_address;
@@ -169,8 +171,7 @@ void *pthread_routine(void *arg)
     char recv[8];
     read(new_socket_fd, &recv, 8);
     printf("%s\n", recv);
-    int system(const char *command);
-    system("python3 hash.py");
+
     char to_send[8];
     strcpy(to_send, "done");
     printf("%s\n", to_send);
