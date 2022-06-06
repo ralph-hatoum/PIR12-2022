@@ -61,6 +61,6 @@ int main(int argc, char **argv) {
         close(sock);
         sock = -1;
     }
-    printf("nombre de non recu sur 100 : %d\n",v);
+    printf("nombre de non recu sur 100 : %d\n",cpt);
     return 0;
 }
