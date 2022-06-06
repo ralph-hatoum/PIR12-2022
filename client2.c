@@ -31,42 +31,33 @@ int main(int argc, char **argv) {
     address.sin_addr.s_addr = inet_addr(addr); /* assign the address */
     address.sin_port = htons(port);            /* translate int2port num */
 
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-    fcntl(sock, F_SETFL, O_NONBLOCK);
+    FD_ZERO(&fdset);
+    FD_SET(sock, &fdset);
+    tv.tv_sec = 5;             /* 10 second timeout */
+    tv.tv_usec = 0;
 
-    int is_connected;
-    int so_error;
-        socklen_t len = sizeof so_error;
-    while (1)
-    {
-        is_connected = connect(sock, (struct sockaddr *)&address, sizeof(address));
+    while(1){
+        sock = socket(AF_INET, SOCK_STREAM, 0);
+        fcntl(sock, F_SETFL, O_NONBLOCK);
 
-        if (is_connected==-1)
-        {
-            perror("connect ");
-        }
-        sleep(0.1);
-        getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
-        printf("%d\n", so_error);
-
-
-        FD_ZERO(&fdset);
-        FD_SET(sock, &fdset);
-        tv.tv_sec = 10;             /* 10 second timeout */
-        tv.tv_usec = 0;
+        connect(sock, (struct sockaddr *)&address, sizeof(address));
 
         if (select(sock + 1, NULL, &fdset, NULL, &tv) == 1)
         {
+            int so_error;
+            socklen_t len = sizeof so_error;
 
+            getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
 
-        getsockopt(sock, SOL_SOCKET, SO_ERROR, &so_error, &len);
-
-        if (so_error == 0) {
-            printf("%s:%d is open\n", addr, port);
+            if (so_error == 0) {
+                printf("%s:%d is open\n", addr, port);
+            }else{
+                break;
+            }
         }
-    }
 
-    close(sock);
+        close(sock);
+        sock = -1;
     }
     return 0;
 }
