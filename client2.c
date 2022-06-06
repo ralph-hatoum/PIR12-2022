@@ -36,7 +36,9 @@ int main(int argc, char **argv) {
     tv.tv_sec = 5;             /* 10 second timeout */
     tv.tv_usec = 0;
 
-    while(1){
+    int cpt = 0;
+    int v;
+    for(v=0; v<100;v++){
         sock = socket(AF_INET, SOCK_STREAM, 0);
         fcntl(sock, F_SETFL, O_NONBLOCK);
 
@@ -52,12 +54,13 @@ int main(int argc, char **argv) {
             if (so_error == 0) {
                 printf("%s:%d is open\n", addr, port);
             }else{
-                break;
+                cpt++;
             }
         }
 
         close(sock);
         sock = -1;
     }
+    fprint("nombre de non recu sur 100 : %d",v);
     return 0;
 }
