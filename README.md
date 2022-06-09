@@ -42,3 +42,12 @@ go run client.go 10.0.1.2:8080
 ```shell
 go run serveur.go 8080
 ```
+
+
+# LIENS UTILES POUR PIR : 
+
+### Drive
+
+```shell
+https://drive.google.com/drive/folders/1jvmrGvSEvxCYcKtBfBea7GX8LUSKYgjg
+```
